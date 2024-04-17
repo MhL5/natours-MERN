@@ -82,7 +82,7 @@ exports.logout = catchAsync(async (req, res, next) => {
   // since we used a httpCookie and we can not access it
   // in order to logout we replace the cookie with a new cookie with very short expiration time(10s)
   res.cookie("jwt", "logged out", {
-    maxAge: 3 * 3000,
+    maxAge: 0.5 * 1000,
     // no need to make it secure here since it does not contain any sensitive data
     httpOnly: true,
     sameSite: "none",

@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { axiosApi } from "../services/api";
 import { showAlert } from "../utils/alert";
 import { useAuthContext } from "../contexts/AuthContext";
+import { isAxiosError } from "axios";
 
 function useUpdateMe() {
   const { setUserFn } = useAuthContext();
@@ -19,8 +20,10 @@ function useUpdateMe() {
       showAlert("success", "Success");
       setUserFn(res.data.data.user);
     },
-    onError: () => {
-      showAlert("error", "bad bad");
+    onError: (error) => {
+      if (isAxiosError(error))
+        showAlert("error", `${error?.response?.data.message}`);
+      else showAlert("error", "unknown error");
     },
   });
 

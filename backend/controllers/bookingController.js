@@ -36,13 +36,19 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 });
 
 // !temp solution on secure everyone can make booking without paying
+// ! did not tested - i added a url for security
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   const { tour, user, price } = req.query;
 
   if (!tour && !user && !price) return next();
   await Booking.create({ tour, user, price });
 
-  res.redirect(req.originalUrl.split(`?`)[0]);
+  const url = new URL(req.originalUrl, `http://${req.headers.host}`);
+
+  console.log(req.originalUrl.split(`?`)[0]);
+
+  // res.redirect(req.originalUrl.split(`?`)[0]);
+  res.redirect(url.pathname);
   // we will hit the "/" after this redirect again 🤔
   // but second time after if we go to the next middleware
   // a temp solution for making it a little secure without the data in url 017

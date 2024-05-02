@@ -1,0 +1,1 @@
+- Replace hard-coded frontend resource paths with dynamic backend URLs, for example, use http://localhost:3000/img/favicon.png instead of a static path.

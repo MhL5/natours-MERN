@@ -78,7 +78,12 @@ exports.getOne = function (Model, populateOptions) {
     const { id } = req.params;
 
     // building the query
-    let query = Model.findById(id);
+    let query;
+    const isId = /^[0-9a-f]{24}$/.test(id);
+    // req.params.id might be an slug ("The-Sea-Explorer") or id ("5c88fa8cf4afda39709c2951")
+    if (isId) query = Model.findById(id);
+    else query = Model.findOne({ slug: id });
+
     if (populateOptions) query = query.populate(populateOptions);
 
     // !ME
